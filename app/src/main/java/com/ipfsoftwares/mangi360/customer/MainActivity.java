@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity
 		startActivityForResult(intent, REQUEST_INVITE);
     }
 
-	public void confirmPayment() {
+	private void confirmPayment() {
 		DialogFragment newFragment = new ConfirmPaymentDialogFragment();
 		newFragment.show(getSupportFragmentManager(), "Confirm Payment");
 	}

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <EditText
-        android:id="@+id/pinNumber"
+        android:id="@+id/confirm_payment_edit_text"
         android:inputType="numberPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

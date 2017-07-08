@@ -8,9 +8,12 @@ import android.support.v4.app.DialogFragment;
 
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class ConfirmPaymentDialogFragment extends DialogFragment {
+	private EditText mPinNumberEditText;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -24,7 +27,8 @@ public class ConfirmPaymentDialogFragment extends DialogFragment {
 			.setPositiveButton(R.string.confirm_payment, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
-					Toast.makeText(ConfirmPaymentDialogFragment.this.getContext(), "Payment confirmed!", Toast.LENGTH_SHORT).show();
+					mPinNumberEditText = (EditText) ConfirmPaymentDialogFragment.this.getDialog().findViewById(R.id.confirm_payment_edit_text);
+					Toast.makeText(ConfirmPaymentDialogFragment.this.getContext(), "Payment confirmed - " + mPinNumberEditText.getText(), Toast.LENGTH_SHORT).show();
 				}
 			})
 			.setNegativeButton(R.string.cancel_payment, new DialogInterface.OnClickListener() {
@@ -35,6 +39,7 @@ public class ConfirmPaymentDialogFragment extends DialogFragment {
 
 		builder.setTitle("Confirm Payment");
 		builder.setMessage("Enter PIN to confirm payment.");
+
 		return builder.create();
     }
 }
