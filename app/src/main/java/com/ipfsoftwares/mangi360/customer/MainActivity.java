@@ -1,4 +1,4 @@
-package com.ipfsoftwares.mangi360;
+package com.ipfsoftwares.mangi360.customer;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

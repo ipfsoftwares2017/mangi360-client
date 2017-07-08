@@ -1,4 +1,4 @@
-package com.ipfsoftwares.mangi360;
+package com.ipfsoftwares.mangi360.customer;
 
 import android.util.Log;
 
