@@ -4,22 +4,37 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import android.support.annotation.NonNull;
+
+import android.support.v4.app.DialogFragment;
+
+import android.support.v7.app.AppCompatActivity;
+
+import android.support.v7.widget.LinearLayoutManager;
+
 import com.google.android.gms.appinvite.AppInviteInvitation;
+
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.ConnectionResult;
+
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import com.google.android.gms.common.ConnectionResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.database.DatabaseReference;
+
+import android.widget.*;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -149,8 +164,48 @@ public class MainActivity extends AppCompatActivity
 			if(result.getContents() == null) {
 				Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-			}
+				JSONTokener tokener = new JSONTokener(result.getContents());
+                JSONObject root = null;
+                try {
+                    root = new JSONObject(tokener);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String grandTotal = null;
+                try {
+                    grandTotal = root.getString("total");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                JSONObject merchantObject = null;
+                try {
+                    merchantObject = new JSONObject(root.getString("merchant"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String merchantName = null;
+                try {
+                    merchantName = merchantObject.getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String merchantNumber = null;
+                try {
+                    merchantNumber = merchantObject.getString("phoneNumber");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+				Toast.makeText(this, "Scanned: " +
+						merchantName + " " +
+						merchantNumber + " " +
+						grandTotal,
+						Toast.LENGTH_LONG).show();
+
+				confirmPayment();
+            }
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
@@ -164,4 +219,9 @@ public class MainActivity extends AppCompatActivity
 
 		startActivityForResult(intent, REQUEST_INVITE);
     }
+
+	public void confirmPayment() {
+		DialogFragment newFragment = new ConfirmPaymentDialogFragment();
+		newFragment.show(getSupportFragmentManager(), "Confirm Payment");
+	}
 }

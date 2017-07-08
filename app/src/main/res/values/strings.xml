@@ -13,4 +13,7 @@
     <string name="cause_crash">Cause crash</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="make_payment">Make Payment</string>
+	<string name="pin_number">Enter pin number</string>
+	<string name="cancel_payment">Cancel</string>
+	<string name="confirm_payment">Confirm</string>
 </resources>
