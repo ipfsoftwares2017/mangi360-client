@@ -20,6 +20,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener {
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         mMakePaymentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: implement onClickListener
+				new IntentIntegrator(MainActivity.this).initiateScan(); // `this` is the current Activity
             }
         });
     }
@@ -142,10 +144,16 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
 
-    	if (requestCode == RESULT_OK) {
-    		String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
-    		Log.d(TAG, "Invitations sent: " + ids.length);
-    	}
+		IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+		if(result != null) {
+			if(result.getContents() == null) {
+				Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+			}
+		} else {
+			super.onActivityResult(requestCode, resultCode, data);
+		}
     }
 
     private void sendInvitation() {
