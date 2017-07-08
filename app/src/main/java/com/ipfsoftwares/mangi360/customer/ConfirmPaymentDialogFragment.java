@@ -1,18 +1,35 @@
 package com.ipfsoftwares.mangi360.customer;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
 import android.support.v4.app.DialogFragment;
-
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.widget.EditText;
-import android.widget.Toast;
 
 public class ConfirmPaymentDialogFragment extends DialogFragment {
-	private EditText mPinNumberEditText;
+
+	public interface ConfirmPaymentListener {
+		void onDialogPositiveClick(DialogFragment dialog);
+		void onDialogNegativeClick(DialogFragment dialog);
+	}
+
+	ConfirmPaymentListener mListener;
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		// Verify that the host activity implements the callback interface
+		try {
+			// Instantiate the NoticeDialogListener so we can send events to the host
+			mListener = (ConfirmPaymentListener) activity;
+		} catch (ClassCastException e) {
+			// The activity doesn't implement the interface, throw exception
+			throw new ClassCastException(activity.toString()
+					+ " must implement ConfirmPaymentDialogListener");
+		}
+	}
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -27,13 +44,12 @@ public class ConfirmPaymentDialogFragment extends DialogFragment {
 			.setPositiveButton(R.string.confirm_payment, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
-					mPinNumberEditText = (EditText) ConfirmPaymentDialogFragment.this.getDialog().findViewById(R.id.confirm_payment_edit_text);
-					Toast.makeText(ConfirmPaymentDialogFragment.this.getContext(), "Payment confirmed - " + mPinNumberEditText.getText(), Toast.LENGTH_SHORT).show();
+					mListener.onDialogPositiveClick(ConfirmPaymentDialogFragment.this);
 				}
 			})
 			.setNegativeButton(R.string.cancel_payment, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					ConfirmPaymentDialogFragment.this.getDialog().cancel();
+					mListener.onDialogNegativeClick(ConfirmPaymentDialogFragment.this);
 				}
 			});
 

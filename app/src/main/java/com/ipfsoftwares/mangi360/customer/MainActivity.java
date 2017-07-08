@@ -39,7 +39,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity
-        implements GoogleApiClient.OnConnectionFailedListener {
+        implements ConfirmPaymentDialogFragment.ConfirmPaymentListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "MainActivity";
     public static final String MESSAGES_CHILD = "messages";
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity
 						grandTotal,
 						Toast.LENGTH_LONG).show();
 
-				confirmPayment();
+				showConfirmPaymentDialog();
             }
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
@@ -220,8 +220,21 @@ public class MainActivity extends AppCompatActivity
 		startActivityForResult(intent, REQUEST_INVITE);
     }
 
-	private void confirmPayment() {
+	private void showConfirmPaymentDialog() {
 		DialogFragment newFragment = new ConfirmPaymentDialogFragment();
 		newFragment.show(getSupportFragmentManager(), "Confirm Payment");
 	}
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        EditText confirmPaymentEditText = (EditText) dialog.getDialog().findViewById(R.id.confirm_payment_edit_text);
+        String pinCode = String.valueOf(confirmPaymentEditText.getText());
+
+        Toast.makeText(this, "Payment confirmed with code " + pinCode, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        Toast.makeText(this, "Payment cancelled!", Toast.LENGTH_LONG).show();
+    }
 }
