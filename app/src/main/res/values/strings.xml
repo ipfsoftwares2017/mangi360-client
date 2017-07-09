@@ -9,11 +9,16 @@
     <string name="invitation_title">Mangi360 Invite</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
-    <string name="fresh_config">Fresh Config</string>
+    <string name="user_profile_menu_label">Your Profile</string>
     <string name="cause_crash">Cause crash</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="make_payment">Make Payment</string>
-	<string name="pin_number">Enter pin number</string>
-	<string name="cancel_payment">Cancel</string>
-	<string name="confirm_payment">Confirm</string>
+    <string name="pin_number">Enter pin number</string>
+    <string name="cancel_payment">Cancel</string>
+    <string name="confirm_payment">Confirm</string>
+    <string name="avatar_content_description">Avatar image</string>
+    <string name="username_edit_text_hint">Your name</string>
+    <string name="phone_edit_text_hint">Your phone</string>
+    <string name="update_profile">Update profile</string>
+    <string name="title_activity_profile">Your Profile</string>
 </resources>
